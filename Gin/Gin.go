@@ -50,6 +50,11 @@ func GetTest(context *gin.Context) {
 		Limit: 500,
 		Page:  1,
 	}
+	// 这样也行，但是都是string
+	// limit := context.DefaultQuery("limit", "1")
+	// Page := context.DefaultQuery("page", "500")
+	// fmt.Println(limit, Page)
+
 	if err := context.Bind(&inputs); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"status": "error", "msg": err.Error()})
 		return
@@ -129,7 +134,7 @@ func GenerateRoutes(r *gin.Engine) {
 	api := r.Group("/api/v1")
 	api.Use(AuthSessionMiddle)
 
-	// curl -H Content-Type:application/json -H token:test-token http://127.0.0.1:8080/api/v1/test
+	// curl -H Content-Type:application/json -H token:test-token 'http://127.0.0.1:8080/api/v1/test?limit=1&page=5'
 	api.GET("/test", GetTest)
 
 	// curl -X POST -H Content-Type:application/json -H token:test-token -d '{"name":"test-1111","tests":["111","222"],"count":10,"create_time":"2019-12-25T10:10:10Z","update_time":"2019-12-25T10:10:11Z"}' http://127.0.0.1:8080/api/v1/test
