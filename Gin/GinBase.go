@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/thinkerou/favicon"
 	"net/http"
 	"strconv"
 	"strings"
@@ -149,7 +150,14 @@ func GenerateRoutes(r *gin.Engine) {
 
 func setupRouter() *gin.Engine {
 	r := gin.Default()
+	// 使用New就会使用一些默认中间件(Logger 和 Recovery)
+	//r := gin.New()
+
 	r.Use(CORS())
+
+	// return 500 if there are any panics
+	r.Use(gin.Recovery())
+	r.Use(favicon.New("./favicon.ico"))
 
 	// string
 	// curl http://127.0.0.1:8080
