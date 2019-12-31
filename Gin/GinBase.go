@@ -147,7 +147,7 @@ func GenerateRoutes(r *gin.Engine) {
 	api.DELETE("/test/:id", DeleteTest)
 }
 
-func main() {
+func setupRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(CORS())
 
@@ -165,5 +165,10 @@ func main() {
 
 	GenerateRoutes(r)
 
+	return r
+}
+
+func main() {
+	r := setupRouter()
 	_ = r.Run(":8080") //默认端口是8080
 }
